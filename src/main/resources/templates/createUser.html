@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+
+    <title th:text="${'Профиль пользователя ' + user.getLogin()}"></title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+<div class="header-page">
+    <h1>Create User PAGE!</h1>
+</div>
+<div class="content-page">
+    <div class="block-list-left">
+        <div class="block-list-left-menu-buttom">
+            <a th:href="@{/user/{id}(id=${user.getId()})}">User page</a>
+        </div>
+        <div class="block-list-left-menu-buttom">
+            <a th:href="@{/admin}">Admin page</a>
+        </div>
+    </div>
+    <div class="block-content">
+
+
+        <form th:method="POST" th:action="@{/admin/createUser}" th:object="${user}">
+            <label for="login">Login</label>
+            <br>
+            <input th:field="*{login}" type="text" id="login"/>
+            <br><br>
+            <label for="password">Password</label>
+            <br>
+            <input th:field="*{password}" type="text" id="password"/>
+            <br><br>
+
+
+            <label for="name">Name</label>
+            <br>
+            <input th:field="*{name}" type="text" id="name"/>
+            <br><br>
+            <label for="lastName">LastName</label>
+            <br>
+            <input th:field="*{lastName}" type="text" id="lastName"/>
+            <br><br>
+            <label for="age">Age</label>
+            <br>
+            <input th:field="*{age}" type="number" id="age"/>
+            <br><br>
+            <label for="height">Height</label>
+            <br>
+            <input th:field="*{height}" type="number" id="height"/>
+            <br><br>
+            <label for="weight">Weight</label>
+            <br>
+            <input th:field="*{weight}" type="number" id="weight"/>
+            <br><br>
+            <label for="roles">Roles:</label>
+            <p th:each="role : ${roles}">
+                <label class="light" for="roles" th:text="${role.getName()}"></label>
+                <input th:field="*{roles}" type="checkbox" id="roles" name="roles" th:value="${role.name}">
+
+                <br>
+            </p>
+
+<!--            <label for="role">Role</label>-->
+<!--            <select multiple="multiple" th:field="*{roles}"-->
+<!--                    type="text" id="role">-->
+<!--                <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getName()}"></option>-->
+
+<!--            </select>-->
+
+            <p>
+                <input type="submit" value="Create User"/>
+            </p>
+        </form>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>
