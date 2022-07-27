@@ -3,7 +3,7 @@ package ru.kata.spring.boot_security.demo.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.UserInfo;
+import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -35,14 +35,14 @@ public class UserController {
 
 //    @GetMapping("/createUser")
 //    public String creatUserForm(Model model) {
-//        model.addAttribute("user", new UserInfo());
+//        model.addAttribute("user", new User());
 //        model.addAttribute("roles", roleService.listRoles());
 //
 //        return "/createUser";
 //    }
-
+//
 //    @PostMapping("/createUser")
-//    public String createUser(@ModelAttribute("user") UserInfo user) {
+//    public String createUser(@ModelAttribute("user") User user) {
 //        userService.add(user);
 //        return "redirect:/user";
 //    }

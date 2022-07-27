@@ -17,7 +17,7 @@
             <a th:href="@{/user/{id}(id=${user.getId()})}">User page</a>
         </div>
         <div class="block-list-left-menu-buttom">
-            <a th:href="@{/admin}">Admin page</a>
+            <a th:href="@{/admin/}">Admin page</a>
         </div>
     </div>
     <div class="block-content">
@@ -54,13 +54,18 @@
             <br>
             <input th:field="*{weight}" type="number" id="weight"/>
             <br><br>
-            <label for="roles">Roles:</label>
-            <p th:each="role : ${roles}">
-                <label class="light" for="roles" th:text="${role.getName()}"></label>
-                <input th:field="*{roles}" type="checkbox" id="roles" name="roles" th:value="${role.name}">
+            <label for="role">Roles:</label>
+            <select multiple="multiple" th:field="*{roles}"
+                    type="text" id="role">
+                <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getName()}"></option>
 
-                <br>
-            </p>
+            </select>
+<!--            <p th:each="role : ${roles}">-->
+<!--                <label class="light" for="roles" th:text="${role.getName()}"></label>-->
+<!--                <input th:field="*{roles}" type="checkbox" id="roles" name="roles" th:value="${role.name}">-->
+
+<!--                <br>-->
+<!--            </p>-->
 
 <!--            <label for="role">Role</label>-->
 <!--            <select multiple="multiple" th:field="*{roles}"-->

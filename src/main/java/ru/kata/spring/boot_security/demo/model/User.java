@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class UserInfo implements UserDetails {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,15 +39,15 @@ public class UserInfo implements UserDetails {
 //            inverseJoinColumns = @JoinColumn(
 //                    name = "role_id", referencedColumnName = "id"))
 //    @ManyToMany(fetch = FetchType.LAZY)
-    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    public UserInfo() {
+    public User() {
     }
 
-    public UserInfo(String login, String password, String name, String lastName, int age, int height, int weight, Set<Role> roles) {
+    public User(String login, String password, String name, String lastName, int age, int height, int weight, Set<Role> roles) {
         this.login = login;
         this.password = password;
         this.name = name;
@@ -134,7 +134,7 @@ public class UserInfo implements UserDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserInfo user = (UserInfo) o;
+        User user = (User) o;
         return age == user.age && height == user.height && weight == user.weight && name.equals(user.name) && lastName.equals(user.lastName);
     }
 
@@ -171,21 +171,21 @@ public class UserInfo implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <title th:text="${'Профиль пользователя ' + user.getLogin()}"></title>
+    <title th:text="${'Профиль пользователя ' }"></title>
     <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
@@ -14,10 +14,10 @@
 <div class="content-page">
     <div class="block-list-left">
         <div class="block-list-left-menu-buttom">
-            <a th:href="@{/user/{id}(id=${user.getId()})}">User page</a>
+            <a th:href="@{/user/}">User page</a>
         </div>
         <div class="block-list-left-menu-buttom">
-            <a th:href="@{/admin}">Admin page</a>
+            <a th:href="@{/admin/}">Admin page</a>
         </div>
     </div>
     <div class="block-content">
@@ -31,24 +31,28 @@
                 <td>Age</td>
                 <td>Height</td>
                 <td>Weight</td>
-                <td>Update User</td>
-                <td>Delete User</td>
+                <td>Roles</td>
+                <td>Update</td>
+                <td>Delete</td>
 
             </tr>
             </thead>
             <tbody>
 
             <tr th:each="user: ${users}">
-                <td><a th:href="@{/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a></td>
+                <td><a th:href="@{/admin/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a></td>
                 <td th:text="${user.getName()}"></td>
                 <td th:text="${user.getLastName()}"></td>
                 <td th:text="${user.getAge()}"></td>
                 <td th:text="${user.getHeight()}"></td>
                 <td th:text="${user.getWeight()}"></td>
-                <td><a th:href="@{/{id}/updateUser(id=${user.id})}">Edit</a></td>
+                <td  th:each=" role : ${user.roles}" th:text="${role.getName()}" >
+
+                </td>
+                <td><a th:href="@{/admin/{id}/updateUser(id=${user.id})}">Edit</a></td>
                 <td>
                     <div>
-                        <form th:method="DELETE" th:action="@{/{id}(id=${user.id})}">
+                        <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.id})}">
                             <p>
                                 <input type="submit" value="Delete User"/>
                             </p>
