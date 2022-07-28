@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     public boolean add(User user) {
 
 //        User userInfoFromDB = getUserByLogin(user.getLogin());
-        User userInfoFromDB = userRepository.findByLogin(user.getLogin());
+        User userInfoFromDB = userRepository.findByUserlogin(user.getLogin());
         if (userInfoFromDB != null) {
             return false;
         }
@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<User> listUsers() {
 //        return userDao.listUsers();
         return userRepository.findAll();
@@ -62,7 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public User findUserById(Long id) {
         return userRepository.getById(id);
 //        return userDao.findUserById(id);
@@ -79,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userLogin) throws UsernameNotFoundException {
-        User user = userRepository.findByLogin(userLogin);
+        User user = userRepository.findByUserlogin(userLogin);
 //        User user = userDao.getUserByLogin(username);
 //        if (user == null) {
 //            throw new UsernameNotFoundException("User not found");

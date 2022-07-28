@@ -45,38 +45,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    //    @Autowired
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .passwordEncoder(getBCryptPasswordEncoder())
                 .withUser("admin")
                 .password(getBCryptPasswordEncoder().encode("admin"))
-//                .password("admin")
+
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
                 .password(getBCryptPasswordEncoder().encode("user"))
-//                .password("user")
+
                 .roles("USER");
 //        auth.userDetailsService(userService);
-//        auth.userDetailsService(userService).passwordEncoder(getBCryptPasswordEncoder());
+//        auth.userDetailsService(userService).passwox  rdEncoder(getBCryptPasswordEncoder());
 //        auth.(userService).passwordEncoder(getBCryptPasswordEncoder());
     }
 
-    //    аутентификация userDetailService
-//   @Bean
-//    public UserDetailsService userDetailsServiceM() {
-//        UserDetailsService uds = new UserDetailsService() {
-//            @Override
-//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//                UserInfo user = userService.getUserByLogin(username);
-//                if (user.getId() < 0) {
-//                    throw new UsernameNotFoundException("user not found");
-//                }
-//                return user;
-//            }
-//        };
-//        return uds;
-//    }
 }
