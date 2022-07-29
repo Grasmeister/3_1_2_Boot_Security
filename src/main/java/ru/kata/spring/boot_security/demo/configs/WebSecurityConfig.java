@@ -1,6 +1,6 @@
 package ru.kata.spring.boot_security.demo.configs;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,13 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/admin/").hasRole("ADMIN")
+                .antMatchers("/user/").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/", "/index").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
-                .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
                 .logout()
@@ -40,13 +39,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/");
     }
 
-    @Bean
+    //    @Bean
     public BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    protected void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .passwordEncoder(getBCryptPasswordEncoder())
                 .withUser("admin")
@@ -58,9 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .password(getBCryptPasswordEncoder().encode("user"))
 
                 .roles("USER");
-//        auth.userDetailsService(userService);
-//        auth.userDetailsService(userService).passwox  rdEncoder(getBCryptPasswordEncoder());
-//        auth.(userService).passwordEncoder(getBCryptPasswordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(getBCryptPasswordEncoder());
+
     }
+
 
 }

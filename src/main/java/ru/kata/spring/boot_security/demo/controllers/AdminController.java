@@ -19,52 +19,59 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-
-    @GetMapping
-    public String index(Model model) {
-        model.addAttribute("users", userService.listUsers());
+    /**
+     * Админ панель
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping()
+    public String userList(Model model) {
+        model.addAttribute("users", userService.allUsers());
         return "/admin";
     }
 
-    @GetMapping("/{id}")
-    public String view(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userService.findUserById(id));
-        model.addAttribute("roles", roleService.listRoles());
-//        model.addAttribute("roles", roleService.getRoleByID(userService.findUserById(id).getRoles().))
-        return "/view";
+    /**
+     * Удаления пользователя из админ панели.
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return "redirect:/admin";
     }
 
-    @GetMapping("/createUser")
+    @GetMapping("/create")
     public String creatUserForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.listRoles());
 
-        return "/createUser";
+        return "/create";
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/create")
     public String createUser(@ModelAttribute("user") User user) {
-        userService.add(user);
-        return "redirect:/{id}";
+
+        userService.saveUser(user);
+        return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/updateUser")
+    @GetMapping("/{id}/update")
     public String updateUser(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.findUserById(id));
-        return "/updateUser";
+        model.addAttribute("roles", roleService.listRoles());
+        return "/update";
 
     }
 
     @PatchMapping("/{id}")
-    public String edit(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userService.updateUserById(id, user);
-        return "redirect:/";
+    public String update(@ModelAttribute("user") User user) {
+
+        userService.updateUser(user);
+        return "redirect:/admin";
     }
 
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        userService.removeUserById(id);
-        return "redirect:/";
-    }
 
 }
