@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,10 +30,13 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Transient
-    private String passwordConfirm;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE})//(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
@@ -119,12 +123,17 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(roles, user.roles);
     }
 
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, age, password, email, roles);
     }
 
     public Set<Role> getRoles() {

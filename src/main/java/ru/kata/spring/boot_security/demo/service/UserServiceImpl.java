@@ -9,31 +9,29 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @PersistenceContext
-    private EntityManager em;
+
 
     private UserRepository userRepository;
 
     private RoleRepository roleRepository;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByName(username);
+        User user = findUserByName(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
@@ -48,6 +46,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userFromDb = userRepository.findById(userId);
         return userFromDb.orElse(new User());
     }
+
     @Override
     @Transactional
     public User findUserByName(String userName) {
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<User> allUsers() {
-        return em.createQuery("SELECT u FROM User u ", User.class).getResultList();
+        return userRepository.findAll();
     }
 
     @Override

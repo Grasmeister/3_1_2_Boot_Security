@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,24 +40,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/");
     }
 
-    //    @Bean
-    public BCryptPasswordEncoder getBCryptPasswordEncoder() {
+    @Bean
+    public static BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Autowired
     protected void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(getBCryptPasswordEncoder())
-                .withUser("admin")
-                .password(getBCryptPasswordEncoder().encode("admin"))
 
-                .roles("ADMIN")
-                .and()
-                .withUser("user")
-                .password(getBCryptPasswordEncoder().encode("user"))
-
-                .roles("USER");
         auth.userDetailsService(userService).passwordEncoder(getBCryptPasswordEncoder());
 
     }

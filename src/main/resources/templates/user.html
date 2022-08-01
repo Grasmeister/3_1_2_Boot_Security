@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="header-page">
-    <h1>User, welcome!</h1>
+    <h1 th:text="${user.getName + ', welcome!'}"></h1>
 </div>
 <div class="content-page">
     <div class="block-list-left">

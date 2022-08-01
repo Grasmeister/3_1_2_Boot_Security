@@ -24,6 +24,12 @@ public class UserController {
         this.roleService = roleService;
     }
 
+    /**
+     * Информаци о зарегистрированном пользователе.
+     * @param principal
+     * @param model
+     * @return
+     */
     @GetMapping()
     public String pageUser(Principal principal, Model model) {
         model.addAttribute("user", userService.findUserByName(principal.getName()));
@@ -31,6 +37,12 @@ public class UserController {
         return "/user";
     }
 
+    /**
+     * Информация о пользователе по id.
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public String pageUser(Model model, @PathVariable("id") Long id) {
         model.addAttribute("roles", roleService.listRoles());

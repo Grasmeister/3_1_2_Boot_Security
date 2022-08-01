@@ -7,6 +7,8 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -26,8 +28,9 @@ public class AdminController {
      * @return
      */
     @GetMapping()
-    public String userList(Model model) {
+    public String userList(Model model, Principal principal) {
         model.addAttribute("users", userService.allUsers());
+        model.addAttribute("admin", userService.findUserByName(principal.getName()));
         return "/admin";
     }
 
@@ -43,6 +46,12 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    /**
+     * Создание пользователя отображение формы.
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/create")
     public String creatUserForm(Model model) {
         model.addAttribute("user", new User());
@@ -51,6 +60,12 @@ public class AdminController {
         return "/create";
     }
 
+    /**
+     * Создание пользователя пост запрос.
+     *
+     * @param user
+     * @return
+     */
     @PostMapping("/create")
     public String createUser(@ModelAttribute("user") User user) {
 
@@ -58,6 +73,13 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    /**
+     * Обновление пользователя, отображение формы.
+     *
+     * @param model
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}/update")
     public String updateUser(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.findUserById(id));
@@ -66,6 +88,12 @@ public class AdminController {
 
     }
 
+    /**
+     * Обновление пользователя, пост запрос.
+     *
+     * @param user
+     * @return
+     */
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user) {
 
